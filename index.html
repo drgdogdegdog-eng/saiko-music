@@ -3,41 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <title>Saiko Music</title>
+
 <style>
 body {
-    background: black;
-    color: white;
-    text-align: center;
-    font-family: Arial;
+  margin: 0;
+  background: #121212;
+  color: white;
+  font-family: Arial;
 }
-img {
-    width: 100%;
+
+.header {
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
+
+.song {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+}
+
+.song img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+.song-info {
+  flex: 1;
+}
+
+.song-title {
+  font-size: 16px;
+}
+
+.song-artist {
+  font-size: 12px;
+  color: gray;
+}
+
 button {
-    padding: 15px;
-    font-size: 20px;
-    background: red;
-    border: none;
-    color: white;
+  background: #1db954;
+  border: none;
+  padding: 8px 12px;
+  color: white;
+  border-radius: 20px;
 }
 </style>
+
 </head>
 
 <body>
 
-<h1>🎤 Saiko Music</h1>
+<div class="header">🎧 Saiko Music</div>
 
-<img src="https://i.imgur.com/8Km9tLL.jpg">
+<div class="song">
+  <img src="https://i.imgur.com/8Km9tUL.jpg">
+  <div class="song-info">
+    <div class="song-title">Song 1</div>
+    <div class="song-artist">Artist</div>
+  </div>
+  <button onclick="playSong(0)">▶</button>
+</div>
 
-<br><br>
+<div class="song">
+  <img src="https://i.imgur.com/8Km9tUL.jpg">
+  <div class="song-info">
+    <div class="song-title">Song 2</div>
+    <div class="song-artist">Artist</div>
+  </div>
+  <button onclick="playSong(1)">▶</button>
+</div>
 
-<button onclick="playMusic()">🎵 Play</button>
-
-<audio id="song" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+<audio id="audio"></audio>
 
 <script>
-function playMusic() {
-    document.getElementById("song").play();
+const songs = [
+  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+];
+
+function playSong(index) {
+  const audio = document.getElementById("audio");
+  audio.src = songs[index];
+  audio.play();
 }
 </script>
 
