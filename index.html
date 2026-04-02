@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Saiko Music</title>
+<style>
+body {
+    background: black;
+    color: white;
+    text-align: center;
+    font-family: Arial;
+}
+img {
+    width: 100%;
+}
+button {
+    padding: 15px;
+    font-size: 20px;
+    background: red;
+    border: none;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎤 Saiko Music</h1>
+
+<img src="https://i.imgur.com/8Km9tLL.jpg">
+
+<br><br>
+
+<button onclick="playMusic()">🎵 Play</button>
+
+<audio id="song" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+<script>
+function playMusic() {
+    document.getElementById("song").play();
+}
+</script>
+
+</body>
+</html>
