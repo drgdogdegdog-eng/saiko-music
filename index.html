@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>Saiko Music</title>
+<title>Saiko Music Pro</title>
 
 <style>
 body {
@@ -12,10 +12,21 @@ body {
   font-family: Arial;
 }
 
-.header {
-  padding: 20px;
-  font-size: 24px;
+header {
+  padding: 15px;
+  font-size: 22px;
   font-weight: bold;
+}
+
+.search {
+  padding: 10px;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
 }
 
 .song {
@@ -28,7 +39,7 @@ body {
 .song img {
   width: 60px;
   height: 60px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-right: 10px;
 }
 
@@ -45,53 +56,79 @@ body {
   color: gray;
 }
 
-button {
-  background: #1db954;
+.controls button {
+  margin-left: 5px;
   border: none;
-  padding: 8px 12px;
-  color: white;
-  border-radius: 20px;
+  padding: 6px;
+  border-radius: 50%;
 }
+
+.play { background: #1db954; color: white; }
+.fav { background: red; color: white; }
+.download { background: blue; color: white; }
 </style>
 
 </head>
 
 <body>
 
-<div class="header">🎧 Saiko Music</div>
+<header>🎧 Saiko Music Pro</header>
 
-<div class="song">
-  <img src="https://i.imgur.com/8Km9tUL.jpg">
-  <div class="song-info">
-    <div class="song-title">Song 1</div>
-    <div class="song-artist">Artist</div>
-  </div>
-  <button onclick="playSong(0)">▶</button>
+<div class="search">
+<input type="text" id="search" placeholder="🔍 ابحث عن أغنية...">
 </div>
 
-<div class="song">
-  <img src="https://i.imgur.com/8Km9tUL.jpg">
-  <div class="song-info">
-    <div class="song-title">Song 2</div>
-    <div class="song-artist">Artist</div>
-  </div>
-  <button onclick="playSong(1)">▶</button>
-</div>
+<div id="songs"></div>
 
 <audio id="audio"></audio>
 
 <script>
 const songs = [
-  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+  {title:"Song 1", artist:"Artist", src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", img:"https://i.imgur.com/8Km9tUL.jpg"},
+  {title:"Song 2", artist:"Artist", src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", img:"https://i.imgur.com/8Km9tUL.jpg"},
+  {title:"Song 3", artist:"Artist", src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", img:"https://i.imgur.com/8Km9tUL.jpg"}
 ];
 
-function playSong(index) {
+let favorites = JSON.parse(localStorage.getItem("fav")) || [];
+
+function render(list){
+  const container = document.getElementById("songs");
+  container.innerHTML = "";
+  
+  list.forEach((s, i)=>{
+    const fav = favorites.includes(s.src) ? "❤️" : "🤍";
+
+    container.innerHTML += `
+    <div class="song">
+      <img src="${s.img}">
+      <div class="song-info">
+        <div class="song-title">${s.title}</div>
+        <div class="song-artist">${s.artist}</div>
+      </div>
+      <div class="controls">
+        <button class="play" onclick="play('${s.src}')">▶</button>
+        <button class="fav" onclick="toggleFav('${s.src}')">${fav}</button>
+        <button class="download" onclick="download('${s.src}')">⬇</button>
+      </div>
+    </div>
+    `;
+  });
+}
+
+function play(src){
   const audio = document.getElementById("audio");
-  audio.src = songs[index];
+  audio.src = src;
   audio.play();
 }
-</script>
 
-</body>
-</html>
+function toggleFav(src){
+  if(favorites.includes(src)){
+    favorites = favorites.filter(x=>x!==src);
+  } else {
+    favorites.push(src);
+  }
+  localStorage.setItem("fav", JSON.stringify(favorites));
+  render(songs);
+}
+
+function download(url){
